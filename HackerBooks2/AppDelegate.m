@@ -7,9 +7,11 @@
 //
 
 #import "AppDelegate.h"
+#import "AGTCoreDataStack.h"
+@import CoreData;
 
 @interface AppDelegate ()
-
+@property (strong,nonatomic) AGTCoreDataStack *stack;
 @end
 
 @implementation AppDelegate
@@ -17,6 +19,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    // Init CoreData stack with the model name
+    self.stack = [AGTCoreDataStack coreDataStackWithModelName:@"Model"];
+    
+    [self trastearConDatos];
+    
+    
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
@@ -44,5 +53,23 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+
+
+#pragma mark - Utils
+-(void) trastearConDatos{
+
+    // Crear una nota
+    NSManagedObject *note = [NSEntityDescription insertNewObjectForEntityForName:@"Annotation"
+                                                          inManagedObjectContext:self.stack.context];
+    
+    // Asignamos valores a las propiedades mediante KVC
+    [note setValue:@"Primera nota" forKey:@"name"];
+    [note setValue:[NSDate date] forKey:@"creationDate"];
+    
+    NSLog(@"%@",note);
+    
+}
+
 
 @end
