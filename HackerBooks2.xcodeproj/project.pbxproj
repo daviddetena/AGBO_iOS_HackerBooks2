@@ -12,6 +12,7 @@
 		59C8607C1ADD216500068194 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59C8607B1ADD216500068194 /* Images.xcassets */; };
 		59C8607F1ADD216500068194 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59C8607D1ADD216500068194 /* LaunchScreen.xib */; };
 		59C8608B1ADD216500068194 /* HackerBooks2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C8608A1ADD216500068194 /* HackerBooks2Tests.m */; };
+		59C8609A1ADD298600068194 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 59C860981ADD298600068194 /* Model.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,7 @@
 		59C860841ADD216500068194 /* HackerBooks2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HackerBooks2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		59C860891ADD216500068194 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59C8608A1ADD216500068194 /* HackerBooks2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HackerBooks2Tests.m; sourceTree = "<group>"; };
+		59C860991ADD298600068194 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,8 +78,12 @@
 		59C860731ADD216500068194 /* HackerBooks2 */ = {
 			isa = PBXGroup;
 			children = (
+				59C860941ADD293000068194 /* Models */,
+				59C860951ADD293600068194 /* Views */,
+				59C860961ADD294000068194 /* Controllers */,
 				59C860781ADD216500068194 /* AppDelegate.h */,
 				59C860791ADD216500068194 /* AppDelegate.m */,
+				59C860971ADD295F00068194 /* Resources */,
 				59C8607B1ADD216500068194 /* Images.xcassets */,
 				59C8607D1ADD216500068194 /* LaunchScreen.xib */,
 				59C860741ADD216500068194 /* Supporting Files */,
@@ -109,6 +115,35 @@
 				59C860891ADD216500068194 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		59C860941ADD293000068194 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				59C860981ADD298600068194 /* Model.xcdatamodeld */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		59C860951ADD293600068194 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		59C860961ADD294000068194 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		59C860971ADD295F00068194 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,6 +247,7 @@
 			files = (
 				59C8607A1ADD216500068194 /* AppDelegate.m in Sources */,
 				59C860771ADD216500068194 /* main.m in Sources */,
+				59C8609A1ADD298600068194 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +446,19 @@
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		59C860981ADD298600068194 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				59C860991ADD298600068194 /* Model.xcdatamodel */,
+			);
+			currentVersion = 59C860991ADD298600068194 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 59C860691ADD216500068194 /* Project object */;
 }
