@@ -14,6 +14,20 @@
 		59C8608B1ADD216500068194 /* HackerBooks2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C8608A1ADD216500068194 /* HackerBooks2Tests.m */; };
 		59C8609A1ADD298600068194 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 59C860981ADD298600068194 /* Model.xcdatamodeld */; };
 		59C8609D1ADD5A2800068194 /* AGTCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C8609C1ADD5A2800068194 /* AGTCoreDataStack.m */; };
+		59C860BA1ADD761E00068194 /* _DTCAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C8609F1ADD761E00068194 /* _DTCAnnotation.m */; };
+		59C860BB1ADD761E00068194 /* _DTCAuthor.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860A11ADD761E00068194 /* _DTCAuthor.m */; };
+		59C860BC1ADD761E00068194 /* _DTCBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860A31ADD761E00068194 /* _DTCBook.m */; };
+		59C860BD1ADD761E00068194 /* _DTCLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860A51ADD761E00068194 /* _DTCLocation.m */; };
+		59C860BE1ADD761E00068194 /* _DTCPdf.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860A71ADD761E00068194 /* _DTCPdf.m */; };
+		59C860BF1ADD761E00068194 /* _DTCPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860A91ADD761E00068194 /* _DTCPhoto.m */; };
+		59C860C01ADD761E00068194 /* _DTCTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860AB1ADD761E00068194 /* _DTCTag.m */; };
+		59C860C11ADD761E00068194 /* DTCAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860AD1ADD761E00068194 /* DTCAnnotation.m */; };
+		59C860C21ADD761E00068194 /* DTCAuthor.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860AF1ADD761E00068194 /* DTCAuthor.m */; };
+		59C860C31ADD761E00068194 /* DTCBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860B11ADD761E00068194 /* DTCBook.m */; };
+		59C860C41ADD761E00068194 /* DTCLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860B31ADD761E00068194 /* DTCLocation.m */; };
+		59C860C51ADD761E00068194 /* DTCPdf.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860B51ADD761E00068194 /* DTCPdf.m */; };
+		59C860C61ADD761E00068194 /* DTCPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860B71ADD761E00068194 /* DTCPhoto.m */; };
+		59C860C71ADD761E00068194 /* DTCTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860B91ADD761E00068194 /* DTCTag.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +54,34 @@
 		59C860991ADD298600068194 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		59C8609B1ADD5A2800068194 /* AGTCoreDataStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGTCoreDataStack.h; sourceTree = "<group>"; };
 		59C8609C1ADD5A2800068194 /* AGTCoreDataStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGTCoreDataStack.m; sourceTree = "<group>"; };
+		59C8609E1ADD761E00068194 /* _DTCAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DTCAnnotation.h; sourceTree = "<group>"; };
+		59C8609F1ADD761E00068194 /* _DTCAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _DTCAnnotation.m; sourceTree = "<group>"; };
+		59C860A01ADD761E00068194 /* _DTCAuthor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DTCAuthor.h; sourceTree = "<group>"; };
+		59C860A11ADD761E00068194 /* _DTCAuthor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _DTCAuthor.m; sourceTree = "<group>"; };
+		59C860A21ADD761E00068194 /* _DTCBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DTCBook.h; sourceTree = "<group>"; };
+		59C860A31ADD761E00068194 /* _DTCBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _DTCBook.m; sourceTree = "<group>"; };
+		59C860A41ADD761E00068194 /* _DTCLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DTCLocation.h; sourceTree = "<group>"; };
+		59C860A51ADD761E00068194 /* _DTCLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _DTCLocation.m; sourceTree = "<group>"; };
+		59C860A61ADD761E00068194 /* _DTCPdf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DTCPdf.h; sourceTree = "<group>"; };
+		59C860A71ADD761E00068194 /* _DTCPdf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _DTCPdf.m; sourceTree = "<group>"; };
+		59C860A81ADD761E00068194 /* _DTCPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DTCPhoto.h; sourceTree = "<group>"; };
+		59C860A91ADD761E00068194 /* _DTCPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _DTCPhoto.m; sourceTree = "<group>"; };
+		59C860AA1ADD761E00068194 /* _DTCTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _DTCTag.h; sourceTree = "<group>"; };
+		59C860AB1ADD761E00068194 /* _DTCTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _DTCTag.m; sourceTree = "<group>"; };
+		59C860AC1ADD761E00068194 /* DTCAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCAnnotation.h; sourceTree = "<group>"; };
+		59C860AD1ADD761E00068194 /* DTCAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCAnnotation.m; sourceTree = "<group>"; };
+		59C860AE1ADD761E00068194 /* DTCAuthor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCAuthor.h; sourceTree = "<group>"; };
+		59C860AF1ADD761E00068194 /* DTCAuthor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCAuthor.m; sourceTree = "<group>"; };
+		59C860B01ADD761E00068194 /* DTCBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCBook.h; sourceTree = "<group>"; };
+		59C860B11ADD761E00068194 /* DTCBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCBook.m; sourceTree = "<group>"; };
+		59C860B21ADD761E00068194 /* DTCLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCLocation.h; sourceTree = "<group>"; };
+		59C860B31ADD761E00068194 /* DTCLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCLocation.m; sourceTree = "<group>"; };
+		59C860B41ADD761E00068194 /* DTCPdf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCPdf.h; sourceTree = "<group>"; };
+		59C860B51ADD761E00068194 /* DTCPdf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCPdf.m; sourceTree = "<group>"; };
+		59C860B61ADD761E00068194 /* DTCPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCPhoto.h; sourceTree = "<group>"; };
+		59C860B71ADD761E00068194 /* DTCPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCPhoto.m; sourceTree = "<group>"; };
+		59C860B81ADD761E00068194 /* DTCTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCTag.h; sourceTree = "<group>"; };
+		59C860B91ADD761E00068194 /* DTCTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCTag.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +165,21 @@
 		59C860941ADD293000068194 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				59C860C81ADD762600068194 /* Machine */,
+				59C860AC1ADD761E00068194 /* DTCAnnotation.h */,
+				59C860AD1ADD761E00068194 /* DTCAnnotation.m */,
+				59C860AE1ADD761E00068194 /* DTCAuthor.h */,
+				59C860AF1ADD761E00068194 /* DTCAuthor.m */,
+				59C860B01ADD761E00068194 /* DTCBook.h */,
+				59C860B11ADD761E00068194 /* DTCBook.m */,
+				59C860B21ADD761E00068194 /* DTCLocation.h */,
+				59C860B31ADD761E00068194 /* DTCLocation.m */,
+				59C860B41ADD761E00068194 /* DTCPdf.h */,
+				59C860B51ADD761E00068194 /* DTCPdf.m */,
+				59C860B61ADD761E00068194 /* DTCPhoto.h */,
+				59C860B71ADD761E00068194 /* DTCPhoto.m */,
+				59C860B81ADD761E00068194 /* DTCTag.h */,
+				59C860B91ADD761E00068194 /* DTCTag.m */,
 				59C8609B1ADD5A2800068194 /* AGTCoreDataStack.h */,
 				59C8609C1ADD5A2800068194 /* AGTCoreDataStack.m */,
 				59C860981ADD298600068194 /* Model.xcdatamodeld */,
@@ -149,6 +206,27 @@
 			children = (
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		59C860C81ADD762600068194 /* Machine */ = {
+			isa = PBXGroup;
+			children = (
+				59C8609E1ADD761E00068194 /* _DTCAnnotation.h */,
+				59C8609F1ADD761E00068194 /* _DTCAnnotation.m */,
+				59C860A01ADD761E00068194 /* _DTCAuthor.h */,
+				59C860A11ADD761E00068194 /* _DTCAuthor.m */,
+				59C860A21ADD761E00068194 /* _DTCBook.h */,
+				59C860A31ADD761E00068194 /* _DTCBook.m */,
+				59C860A41ADD761E00068194 /* _DTCLocation.h */,
+				59C860A51ADD761E00068194 /* _DTCLocation.m */,
+				59C860A61ADD761E00068194 /* _DTCPdf.h */,
+				59C860A71ADD761E00068194 /* _DTCPdf.m */,
+				59C860A81ADD761E00068194 /* _DTCPhoto.h */,
+				59C860A91ADD761E00068194 /* _DTCPhoto.m */,
+				59C860AA1ADD761E00068194 /* _DTCTag.h */,
+				59C860AB1ADD761E00068194 /* _DTCTag.m */,
+			);
+			name = Machine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,8 +328,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59C860BB1ADD761E00068194 /* _DTCAuthor.m in Sources */,
+				59C860BA1ADD761E00068194 /* _DTCAnnotation.m in Sources */,
+				59C860C71ADD761E00068194 /* DTCTag.m in Sources */,
 				59C8607A1ADD216500068194 /* AppDelegate.m in Sources */,
 				59C860771ADD216500068194 /* main.m in Sources */,
+				59C860C11ADD761E00068194 /* DTCAnnotation.m in Sources */,
+				59C860BF1ADD761E00068194 /* _DTCPhoto.m in Sources */,
+				59C860BE1ADD761E00068194 /* _DTCPdf.m in Sources */,
+				59C860BD1ADD761E00068194 /* _DTCLocation.m in Sources */,
+				59C860C61ADD761E00068194 /* DTCPhoto.m in Sources */,
+				59C860C51ADD761E00068194 /* DTCPdf.m in Sources */,
+				59C860C01ADD761E00068194 /* _DTCTag.m in Sources */,
+				59C860BC1ADD761E00068194 /* _DTCBook.m in Sources */,
+				59C860C31ADD761E00068194 /* DTCBook.m in Sources */,
+				59C860C41ADD761E00068194 /* DTCLocation.m in Sources */,
+				59C860C21ADD761E00068194 /* DTCAuthor.m in Sources */,
 				59C8609D1ADD5A2800068194 /* AGTCoreDataStack.m in Sources */,
 				59C8609A1ADD298600068194 /* Model.xcdatamodeld in Sources */,
 			);
