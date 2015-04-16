@@ -6,4 +6,5 @@
 +(instancetype) authorWithName:(NSString *) name
                        context:(NSManagedObjectContext *) context;
 
+
 @end

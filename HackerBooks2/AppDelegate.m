@@ -28,6 +28,8 @@
     // Init CoreData stack with the model name
     self.stack = [AGTCoreDataStack coreDataStackWithModelName:@"Model"];
     
+    [self configureApp];
+    
     //[self trastearConDatos];
     
     //[self autoSave];
@@ -87,6 +89,9 @@
 #pragma mark - App setup
 -(void) configureApp{
 
+    [self configureModelForFirstLaunch];
+    
+    /*
     // Combrobamos si es la primera vez que se lanza la aplicación
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults objectForKey:LAST_SELECTED_BOOK]) {
@@ -101,14 +106,46 @@
     
         // Leer modelo de CoreData
     }
+     */
 }
 
 -(void) configureModelForFirstLaunch{
 
+    // Get data from a remote resource via JSON
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:JSON_API_URL]];
+    
+    // Get response from server dealing with errors
+    NSURLResponse *response = [[NSURLResponse alloc]init];
+    NSError *error;
+    NSData *modelData = [NSURLConnection sendSynchronousRequest:request
+                                              returningResponse:&response
+                                                          error:&error];
+    
+    if (modelData!=nil) {
+        id JSONObjects = [NSJSONSerialization JSONObjectWithData:modelData
+                                                         options:kNilOptions
+                                                           error:&error];
+        
+        
+        if (JSONObjects!=nil) {
+            if ([JSONObjects isKindOfClass:[NSArray class]]) {
+                
+                // Guardamos cada libro a partir de su diccionario en el JSON
+                for (NSDictionary *dict in JSONObjects) {
+                    [DTCBook bookWithDictionary:dict context:self.stack.context];
+                }
+            }
+        }
+    }
+    else{
+        // No data or error
+        NSLog(@"Error while downloading JSON from server: %@",error.localizedDescription);
+    }
 }
 
 
 #pragma mark - Utils
+/*
 -(void) trastearConDatos{
 
     // Creamos libros y anotaciones. Al asignarle un libro a la anotación
@@ -163,7 +200,7 @@
     // Guardar
     [self save];
 }
-
+*/
 -(void) save{
     [self.stack saveWithErrorBlock:^(NSError *error) {
         NSLog(@"Error al guardar: %@",error.description);

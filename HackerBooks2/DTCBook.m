@@ -48,32 +48,55 @@
     DTCBook *book = [NSEntityDescription insertNewObjectForEntityForName:[DTCBook entityName]
                                                   inManagedObjectContext:context];
     
-    // SACAR LOS DATOS DEL DICCIONARIO Y ASIGNARSELOS
+    // Propiedades obligatorias
+    NSArray *arrayOfAuthors = [DTCHelpers arrayOfItemsFromString:[dict objectForKey:@"authors"] separatedBy:@", "];
+    NSArray *arrayOfTags = [DTCHelpers arrayOfItemsFromString:[dict objectForKey:@"tags"] separatedBy:@", "];
+    
     book.title = [dict objectForKey:@"title"];
     
-    
-    // Un libro debe tener una foto, aunque sea vacía. Inicialmente, la imagen será "Sin foto"
-    //book.photo = [DTCPhoto photoWithImage:[UIImage imageNamed:@"noimageThumb.png"] context:context];
-    
-    // Un libro debe tener un pdf, aunque esté vacío inicialmente
-    //book.pdf = [DTCPdf insertInManagedObjectContext:context];
-    
-    /*
-    NSArray *arrayOfAuthors = [DTCHelpers extractItemsFromString:[dict objectForKey:@"authors"] separatedBy:@", "];
-    NSArray *arrayOfTags = [DTCHelpers extractItemsFromString:[dict objectForKey:@"tags"] separatedBy:@", "];
-    
-    book.pdf = [NSEntityDescription insertNewObjectForEntityForName:@"Pdf" inManagedObjectContext:context];
-    book.pdf.url = [dict objectForKey:@"pdf_url"];
-    
     for (NSString *author in arrayOfAuthors) {
-        DTCAuthor *author = [NSEntityDescription insertNewObjectForEntityForName:@"Author" inManagedObjectContext:context];
-        [book addAuthorsObject:author];
+        [book addAuthorsObject:[DTCAuthor authorWithName:author context:context]];
     }
-     */
+    
+    for (NSString *tag in arrayOfTags) {
+        [book addTagsObject:[DTCTag tagWithName:tag context:context]];
+    }
+    
+    book.pdf = [DTCPdf pdfWithURL:[NSURL URLWithString:[dict objectForKey:@"pdf_url"]]
+                          context:context];
+    book.photo = [DTCPhoto photoWithImage:[UIImage imageNamed:@"noimageThumb.png"]
+                                 imageURL:[NSURL URLWithString:[dict objectForKey:@"image_url"]]
+                                  context:context];
     return book;
 }
 
 #pragma mark - Utils
+// TRY TO IMPLEMENT A GENERIC METHOD FOR THESE TWO
+
+// Return the author(s) of a book in a string
+-(NSString *) stringOfAuthors{
+    
+    NSMutableString *stringOfAuthors = [[NSMutableString alloc]init];
+    for (DTCAuthor *author in self.authors) {
+        [stringOfAuthors appendString:author.name];
+        [stringOfAuthors appendString:@", "];
+    }
+    [stringOfAuthors deleteCharactersInRange:NSMakeRange([stringOfAuthors length]-2,2)];
+    return stringOfAuthors;
+}
+
+// Return the tag(s) of a book in a string
+-(NSString *) stringOfTags{
+
+    NSMutableString *stringOfTags = [[NSMutableString alloc]init];
+    for (DTCTag *tag in self.tags) {
+        [stringOfTags appendString:tag.name];
+        [stringOfTags appendString:@", "];
+    }
+    [stringOfTags deleteCharactersInRange:NSMakeRange([stringOfTags length] -2 ,2)];
+    return stringOfTags;
+}
+
 -(BOOL) isFavorite{
     // Un libro será favorito si tiene la tag "favorite"
     

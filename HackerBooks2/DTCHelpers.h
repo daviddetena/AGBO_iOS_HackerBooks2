@@ -13,11 +13,11 @@
 #pragma mark - Arrays and Strings
 
 // Utility method to extract items from NSString with a separator and add them to an array
-+(NSArray *) extractItemsFromString: (NSString *)string
++(NSArray *) arrayOfItemsFromString:(NSString *) string
                         separatedBy:(NSString *) separator;
 
 // Returns a string containing all the objects in the array, separated by a separator
-+(NSString *) stringOfItemsFromArray: (NSArray *) anArray
++(NSString *) stringOfItemsFromArray:(NSArray *) anArray
                          separatedBy:(NSString *) separator;
 
 +(NSString *) urlPathWithBackslashesDeletedFromPath: (NSURL *) aPath;

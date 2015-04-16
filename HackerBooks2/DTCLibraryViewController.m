@@ -9,6 +9,7 @@
 #import "DTCLibraryViewController.h"
 #import "DTCBook.h"
 #import "DTCHelpers.h"
+#import "DTCPhoto.h"
 
 @interface DTCLibraryViewController ()
 
@@ -46,9 +47,9 @@
     
     // Configurar la celda => sincronizar celda (vista) y libro (modelo)
     cell.textLabel.text = book.title;
+    cell.imageView.image = book.photo.image;
+    cell.detailTextLabel.text = [book stringOfAuthors];
     
-    //cell.detailTextLabel.text = [DTCHelpers stringOfItemsFromArray:[book.authors allObjects]
-                                                       //separatedBy:@", "];
     
     // Devolver celda
     return cell;
