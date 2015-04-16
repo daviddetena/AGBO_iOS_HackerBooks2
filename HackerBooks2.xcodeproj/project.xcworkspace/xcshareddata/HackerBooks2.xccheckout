@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>95D00CE0-1DEF-458E-AC06-ADF511686E52</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>HackerBooks2</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>DBA74642AF91ED0297C746F543C74ECC9C964D4E</key>
 		<string>https://github.com/daviddetena/AGBO_iOS_HackerBooks2.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>HackerBooks2.xcodeproj/project.xcworkspace</string>
+	<string>HackerBooks2.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>DBA74642AF91ED0297C746F543C74ECC9C964D4E</key>

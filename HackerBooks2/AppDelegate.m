@@ -8,6 +8,11 @@
 
 #import "AppDelegate.h"
 #import "AGTCoreDataStack.h"
+#import "DTCBook.h"
+#import "DTCAnnotation.h"
+#import "Settings.h"
+#import "DTCLibraryViewController.h"
+#import "UIViewController+Navigation.h"
 @import CoreData;
 
 @interface AppDelegate ()
@@ -16,14 +21,35 @@
 
 @implementation AppDelegate
 
-
+#pragma mark - App Lifecycle
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     // Init CoreData stack with the model name
     self.stack = [AGTCoreDataStack coreDataStackWithModelName:@"Model"];
     
-    [self trastearConDatos];
+    //[self trastearConDatos];
+    
+    //[self autoSave];
+    
+    // FetchRequest para búsqueda de libros, ordenados por nombre. En lotes de 20
+    NSFetchRequest *req = [NSFetchRequest fetchRequestWithEntityName:[DTCBook entityName]];
+    req.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:DTCBookAttributes.title ascending:YES]];
+    req.fetchBatchSize = 20;
+    
+    
+    NSFetchedResultsController *results = [[NSFetchedResultsController alloc] initWithFetchRequest:req
+                                                                              managedObjectContext:self.stack.context
+                                                                                sectionNameKeyPath:nil
+                                                                                         cacheName:nil];
+    
+    
+    // Controlador de tabla de libros con NSFetchedResultsController
+    DTCLibraryViewController *libraryVC = [[DTCLibraryViewController alloc] initWithFetchedResultsController:results
+                                                                                                     style:UITableViewStylePlain];
+    
+    // Controlador raíz: nuestra tabla embebida en un navigation controller
+    self.window.rootViewController = [libraryVC wrappedInNavigation];
     
     
     // Override point for customization after application launch.
@@ -35,11 +61,13 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    [self save];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [self save];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -51,24 +79,106 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    // It's too late to save
+    NSLog(@"Adiós, mundo cruel");
 }
 
+
+#pragma mark - App setup
+-(void) configureApp{
+
+    // Combrobamos si es la primera vez que se lanza la aplicación
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (![defaults objectForKey:LAST_SELECTED_BOOK]) {
+        // Descargamos JSON
+        [self configureModelForFirstLaunch];
+        
+        // Cargamos modelo con JSON
+        
+        // Guardamos modelo en CoreData
+    }
+    else{
+    
+        // Leer modelo de CoreData
+    }
+}
+
+-(void) configureModelForFirstLaunch{
+
+}
 
 
 #pragma mark - Utils
 -(void) trastearConDatos{
 
-    // Crear una nota
-    NSManagedObject *note = [NSEntityDescription insertNewObjectForEntityForName:@"Annotation"
-                                                          inManagedObjectContext:self.stack.context];
+    // Creamos libros y anotaciones. Al asignarle un libro a la anotación
+    // no necesitamos indicárselo al libro de la forma book.notes = ...
+    DTCBook *book2 = [DTCBook bookWithTitle:@"Los Pilares de La Tierra"
+                                    context:self.stack.context];
     
-    // Asignamos valores a las propiedades mediante KVC
-    [note setValue:@"Primera nota" forKey:@"name"];
-    [note setValue:[NSDate date] forKey:@"creationDate"];
+    DTCBook *book = [DTCBook bookWithTitle:@"Fray Perico y su borrico"
+                                   context:self.stack.context];
     
-    NSLog(@"%@",note);
+    DTCBook *book3 = [DTCBook bookWithTitle:@"Cincuenta sombras de Gray"
+                                   context:self.stack.context];
     
+    
+    [DTCAnnotation annotationWithName:@"Primera nota"
+                                 book:book
+                              context:self.stack.context];
+    
+    [DTCAnnotation annotationWithName:@"Segunda nota"
+                                 book:book
+                              context:self.stack.context];
+    
+    [DTCAnnotation annotationWithName:@"Primera nota otro libro"
+                                 book:book2
+                              context:self.stack.context];
+    
+    
+    // Buscamos los libros y ponemos un criterio de ordenación (nombre + fecha_mod)
+    NSFetchRequest *req = [[NSFetchRequest alloc] initWithEntityName:[DTCBook entityName]];
+    req.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:DTCBookAttributes.title ascending:YES]];
+    // Número de resultados que devolverá en cada lote:20
+    req.fetchBatchSize = 20;
+    
+    //Queremos todas las notas de la libreta exs
+    //req.predicate = [NSPredicate predicateWithFormat:@"notebook = %@",exs];
+    
+    
+    
+    NSArray *results = [self.stack
+                        executeFetchRequest:req
+                        errorBlock:^(NSError *error) {
+                            NSLog(@"Error al buscar! %@",error);
+                        }];
+    NSLog(@"Notas: %@",results);
+    
+    //NSLog(@"%@",book3);
+    
+    // Eliminamos libro
+    //[self.stack.context deleteObject:book];
+    
+    
+    // Guardar
+    [self save];
+}
+
+-(void) save{
+    [self.stack saveWithErrorBlock:^(NSError *error) {
+        NSLog(@"Error al guardar: %@",error.description);
+    }];
+}
+
+-(void) autoSave{
+    if (AUTO_SAVE) {
+        NSLog(@"Autoguardando...");
+        [self save];
+        
+        [self performSelector:@selector(autoSave)
+                   withObject:nil
+                   afterDelay:AUTO_SAVE_DELAY_IN_SECONDS];
+    }    
 }
 
 
