@@ -19,11 +19,8 @@
                                  ascending:(BOOL) ascending
                                    inStack:(AGTCoreDataStack *) stack{
     
-    NSString *entity = [NSString stringWithFormat:@"%@ entityName",entityName];
-    NSString *attributes = [NSString stringWithFormat:@"%@Attributes.%@", entityName, sortingField];
-    
-    NSFetchRequest *req = [NSFetchRequest fetchRequestWithEntityName:entity];
-    req.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:attributes
+    NSFetchRequest *req = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    req.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:sortingField
                                                           ascending:ascending
                                                            selector:@selector(caseInsensitiveCompare:)]];
     

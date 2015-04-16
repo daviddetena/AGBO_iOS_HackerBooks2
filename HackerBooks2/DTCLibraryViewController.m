@@ -33,9 +33,9 @@
          cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 
     
-    // Averiguar el libro
-    DTCBook *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    //DTCTag *tag = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    // Averiguar el tag
+    DTCTag *tag = [self.fetchedResultsController.fetchedObjects objectAtIndex:indexPath.section];
+    DTCBook *book = [[tag.books allObjects] objectAtIndex:indexPath.row];
     
     // Crear celda
     static NSString *cellID = @"cellID";
@@ -46,22 +46,28 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:cellID];
     }
-    
-    
-    // Configurar la celda => sincronizar celda (vista) y libro (modelo)
-    /*
-    cell.textLabel.text = tag.name;
-    cell.detailTextLabel.text = [tag stringOfBooks];
-    */
-    
-    
+
     cell.textLabel.text = book.title;
     cell.imageView.image = book.photo.image;
-    cell.detailTextLabel.text = [book stringOfTags];
+    cell.detailTextLabel.text = [book stringOfAuthors];
     
     
     // Devolver celda
     return cell;
 }
+
+
+-(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
+    return [self.fetchedResultsController.fetchedObjects count];
+}
+
+
+-(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    DTCTag *tag = [self.fetchedResultsController.fetchedObjects objectAtIndex:section];
+    return [[tag.books allObjects]count];
+}
+
+
+#pragma mark - Delegate
 
 @end

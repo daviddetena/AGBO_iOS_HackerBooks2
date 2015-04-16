@@ -12,6 +12,7 @@
 #import "DTCAnnotation.h"
 #import "DTCTag.h"
 #import "Settings.h"
+#import "DTCCoreDataQueries.h"
 #import "DTCLibraryViewController.h"
 #import "UIViewController+Navigation.h"
 @import CoreData;
@@ -30,36 +31,19 @@
     self.stack = [AGTCoreDataStack coreDataStackWithModelName:@"Model"];
     
     [self configureApp];
-    
-    //[self trastearConDatos];
-    
-    //[self autoSave];
-    
-    
-    // FetchRequest para búsqueda de libros. Los libros los tendremos que buscar según el TAG, de forma alfabética
-    /*
+
     NSFetchRequest *req = [NSFetchRequest fetchRequestWithEntityName:[DTCTag entityName]];
-    //req.propertiesToGroupBy = @[DTCTagAttributes.name];
+
     req.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:DTCTagAttributes.name ascending:YES selector:@selector(caseInsensitiveCompare:)]];
-    req.fetchBatchSize = 20;
-     */
-    
-    
-    NSFetchRequest *req = [NSFetchRequest fetchRequestWithEntityName:[DTCBook entityName]];
-    //req.propertiesToGroupBy = @[DTCBookRelationships.tags];
-    req.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:DTCBookAttributes.title ascending:YES selector:@selector(caseInsensitiveCompare:)]];
-    req.fetchBatchSize = 20;
-    
-    
     NSFetchedResultsController *results = [[NSFetchedResultsController alloc] initWithFetchRequest:req
                                                                               managedObjectContext:self.stack.context
-                                                                                sectionNameKeyPath:nil
+                                                                                sectionNameKeyPath:DTCTagAttributes.name
                                                                                          cacheName:nil];
     
     
     // Controlador de tabla de libros con NSFetchedResultsController
     DTCLibraryViewController *libraryVC = [[DTCLibraryViewController alloc] initWithFetchedResultsController:results
-                                                                                                     style:UITableViewStylePlain];
+                                                                                                     style:UITableViewStyleGrouped];
     
     // Controlador raíz: nuestra tabla embebida en un navigation controller
     self.window.rootViewController = [libraryVC wrappedInNavigation];
@@ -74,13 +58,13 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    [self save];
+    //[self save];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    [self save];
+    //[self save];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -148,6 +132,7 @@
                 }
             }
         }
+        NSLog(@"JSON successfully downloaded");
     }
     else{
         // No data or error
