@@ -1,4 +1,5 @@
 #import "DTCAnnotation.h"
+#import "AGTCoreDataStack.h"
 
 @interface DTCAnnotation ()
 
@@ -14,12 +15,12 @@
 }
 
 #pragma mark - Factory init
-+(instancetype) annotationWithName:(NSString *) name
++(instancetype) annotationWithName:(NSString *)name
                               book:(DTCBook *) book
-                           context:(NSManagedObjectContext *) context{
+                             stack:(AGTCoreDataStack *) stack{
     
     DTCAnnotation *annotation = [NSEntityDescription insertNewObjectForEntityForName:[DTCAnnotation entityName]
-                                                              inManagedObjectContext:context];
+                                                              inManagedObjectContext:stack.context];
     annotation.name = name;
     annotation.book = book;
     annotation.creationDate = [NSDate date];

@@ -10,6 +10,7 @@
 #import "AGTCoreDataStack.h"
 #import "DTCBook.h"
 #import "DTCAnnotation.h"
+#import "DTCTag.h"
 #import "Settings.h"
 #import "DTCLibraryViewController.h"
 #import "UIViewController+Navigation.h"
@@ -34,9 +35,19 @@
     
     //[self autoSave];
     
-    // FetchRequest para búsqueda de libros, ordenados por nombre. En lotes de 20
+    
+    // FetchRequest para búsqueda de libros. Los libros los tendremos que buscar según el TAG, de forma alfabética
+    /*
+    NSFetchRequest *req = [NSFetchRequest fetchRequestWithEntityName:[DTCTag entityName]];
+    //req.propertiesToGroupBy = @[DTCTagAttributes.name];
+    req.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:DTCTagAttributes.name ascending:YES selector:@selector(caseInsensitiveCompare:)]];
+    req.fetchBatchSize = 20;
+     */
+    
+    
     NSFetchRequest *req = [NSFetchRequest fetchRequestWithEntityName:[DTCBook entityName]];
-    req.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:DTCBookAttributes.title ascending:YES]];
+    //req.propertiesToGroupBy = @[DTCBookRelationships.tags];
+    req.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:DTCBookAttributes.title ascending:YES selector:@selector(caseInsensitiveCompare:)]];
     req.fetchBatchSize = 20;
     
     
@@ -132,7 +143,8 @@
                 
                 // Guardamos cada libro a partir de su diccionario en el JSON
                 for (NSDictionary *dict in JSONObjects) {
-                    [DTCBook bookWithDictionary:dict context:self.stack.context];
+                    //[DTCBook bookWithDictionary:dict context:self.stack.context];
+                    [DTCBook bookWithDictionary:dict stack:self.stack];
                 }
             }
         }

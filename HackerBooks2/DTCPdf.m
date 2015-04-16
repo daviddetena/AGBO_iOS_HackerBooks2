@@ -1,4 +1,5 @@
 #import "DTCPdf.h"
+#import "AGTCoreDataStack.h"
 
 @interface DTCPdf ()
 
@@ -19,10 +20,10 @@
 #pragma mark - Factory Init
 // Creamos un objeto pdf con datos vacíos a partir de la url
 +(instancetype) pdfWithURL:(NSURL *) url
-                   context:(NSManagedObjectContext *) context{
+                     stack:(AGTCoreDataStack *) stack{
 
     DTCPdf *pdf = [NSEntityDescription insertNewObjectForEntityForName:[DTCPdf entityName]
-                                                inManagedObjectContext:context];
+                                                inManagedObjectContext:stack.context];
     pdf.url = [url absoluteString];
     pdf.pdfData = nil;
     return pdf;

@@ -8,6 +8,7 @@
 
 #import "DTCHelpers.h"
 
+
 @implementation DTCHelpers
 
 #pragma mark - Utils
@@ -37,6 +38,27 @@
     NSString *clearPath = [path stringByReplacingOccurrencesOfString:@"\\" withString:@""];
     
     return clearPath;
+}
+
++(BOOL) existsItemFromClass:(id) nameClass
+               withProperty:(NSString *) property
+                  inContext:(NSManagedObjectContext *) context{
+
+    // Realizamos una búsqueda en el contexto de CoreData para ver si ya existe
+    // algún objeto con la propiedad indicada
+    NSString *entityName = [NSString stringWithFormat:@"%@ entityName",nameClass];
+    NSFetchRequest *req = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    NSString *entityProperty = [NSString stringWithFormat:@"%@Attributes.%@",nameClass,property];
+    req.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:entityProperty ascending:NO]];
+    
+    NSFetchedResultsController *results = [[NSFetchedResultsController alloc] initWithFetchRequest:req
+                                                                              managedObjectContext:context
+                                                                                sectionNameKeyPath:nil
+                                                                                         cacheName:nil];
+    if (results == nil) {
+        return NO;
+    }
+    return YES;
 }
 
 @end

@@ -1,15 +1,12 @@
 #import "_DTCBook.h"
+@class AGTCoreDataStack;
 
 @interface DTCBook : _DTCBook {}
 
 
 #pragma mark - Factory inits
-
-+(instancetype) bookWithTitle:(NSString *)title
-                      context:(NSManagedObjectContext *) context;
-
-+(instancetype) bookWithDictionary: (NSDictionary *) dict
-                           context:(NSManagedObjectContext *) context;
++(instancetype) bookWithDictionary:(NSDictionary *) dict
+                             stack:(AGTCoreDataStack *) stack;
 
 
 #pragma mark - Instance methods

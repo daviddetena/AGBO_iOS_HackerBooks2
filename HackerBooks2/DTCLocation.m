@@ -11,7 +11,7 @@
 #pragma mark - Properties inherited from base class
 +(NSArray *) observableKeys{
     // Observo las propiedades de las relaciones
-    return @[];
+    return @[DTCLocationAttributes.address,DTCLocationAttributes.latitude,DTCLocationAttributes.longitude];
 }
 
 

@@ -1,5 +1,9 @@
 #import "_DTCLocation.h"
+@class AGTCoreDataStack;
 
 @interface DTCLocation : _DTCLocation {}
-// Custom logic goes here.
+
+#pragma mark - Factory methods
+
+
 @end

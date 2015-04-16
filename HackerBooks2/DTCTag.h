@@ -1,11 +1,14 @@
 #import "_DTCTag.h"
+@class AGTCoreDataStack;
 
 @interface DTCTag : _DTCTag {}
 
 #pragma mark - Factory init
 
-//+(instancetype) tagWithName:(NSString *) name;
 +(instancetype) tagWithName:(NSString *) name
-                    context:(NSManagedObjectContext *) context;
+                      stack:(AGTCoreDataStack *) stack;
+
+
+-(NSString *) stringOfBooks;
 
 @end

@@ -10,6 +10,7 @@
 #import "DTCBook.h"
 #import "DTCHelpers.h"
 #import "DTCPhoto.h"
+#import "DTCTag.h"
 
 @interface DTCLibraryViewController ()
 
@@ -34,6 +35,7 @@
     
     // Averiguar el libro
     DTCBook *book = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    //DTCTag *tag = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
     // Crear celda
     static NSString *cellID = @"cellID";
@@ -45,10 +47,17 @@
                                       reuseIdentifier:cellID];
     }
     
+    
     // Configurar la celda => sincronizar celda (vista) y libro (modelo)
+    /*
+    cell.textLabel.text = tag.name;
+    cell.detailTextLabel.text = [tag stringOfBooks];
+    */
+    
+    
     cell.textLabel.text = book.title;
     cell.imageView.image = book.photo.image;
-    cell.detailTextLabel.text = [book stringOfAuthors];
+    cell.detailTextLabel.text = [book stringOfTags];
     
     
     // Devolver celda

@@ -1,4 +1,5 @@
 #import "DTCAuthor.h"
+#import "AGTCoreDataStack.h"
 
 @interface DTCAuthor ()
 
@@ -11,15 +12,15 @@
 #pragma mark - Properties inherited from base class
 +(NSArray *) observableKeys{
     // Observo las propiedades de las relaciones
-    return @[];
+    return @[DTCAuthorAttributes.name, DTCAuthorRelationships.books];
 }
 
 #pragma mark - Factory init
 +(instancetype) authorWithName:(NSString *) name
-                       context:(NSManagedObjectContext *) context{
+                         stack:(AGTCoreDataStack *) stack{
 
     DTCAuthor *author = [NSEntityDescription insertNewObjectForEntityForName:[DTCAuthor entityName]
-                                                      inManagedObjectContext:context];
+                                                      inManagedObjectContext:stack.context];
     author.name = name;
     return author;
 }

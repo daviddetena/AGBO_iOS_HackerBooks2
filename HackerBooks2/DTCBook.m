@@ -1,9 +1,11 @@
+#import "AGTCoreDataStack.h"
 #import "DTCBook.h"
 #import "DTCHelpers.h"
 #import "DTCPdf.h"
 #import "DTCAuthor.h"
 #import "DTCPhoto.h"
 #import "DTCTag.h"
+#import "DTCCoreDataQueries.h"
 
 @interface DTCBook ()
 
@@ -22,31 +24,12 @@
 
 #pragma mark - Factory inits
 
-+(instancetype) bookWithTitle:(NSString *) title
-                      context:(NSManagedObjectContext *) context{
++(instancetype) bookWithDictionary:(NSDictionary *) dict
+                             stack:(AGTCoreDataStack *) stack{
 
-    // Configuramos libro con propiedades obligatorias
-    DTCBook *book = [NSEntityDescription insertNewObjectForEntityForName:[DTCBook entityName]
-                                                  inManagedObjectContext:context];
-    book.title = title;
-    [book addTagsObject:[DTCTag tagWithName:@"Literatura"
-                                    context:context]];
-    [book addAuthorsObject:[DTCAuthor authorWithName:@"Alfredo Landa"
-                                             context:context]];
-    book.pdf = [DTCPdf pdfWithURL:[NSURL URLWithString:@"http://www.marca.com"]
-                          context:context];
-    book.photo = [DTCPhoto photoWithImage:[UIImage imageNamed:@"noimageThumb.png"]
-                                 imageURL:[NSURL URLWithString:@"www.marca.com"]
-                                  context:context];
-    return book;
-}
-
-
-+(instancetype) bookWithDictionary: (NSDictionary *) dict
-                           context:(NSManagedObjectContext *) context{
 
     DTCBook *book = [NSEntityDescription insertNewObjectForEntityForName:[DTCBook entityName]
-                                                  inManagedObjectContext:context];
+                                                  inManagedObjectContext:stack.context];
     
     // Propiedades obligatorias
     NSArray *arrayOfAuthors = [DTCHelpers arrayOfItemsFromString:[dict objectForKey:@"authors"] separatedBy:@", "];
@@ -54,21 +37,53 @@
     
     book.title = [dict objectForKey:@"title"];
     
-    for (NSString *author in arrayOfAuthors) {
-        [book addAuthorsObject:[DTCAuthor authorWithName:author context:context]];
+    // Añadimos tags al libro, creando la etiqueta sólo si no existe
+    for (NSString *tag in arrayOfTags) {
+        // Compruebo si existe el tag
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name = %@",tag];
+        NSArray *results = [DTCCoreDataQueries resultsFromFetchForEntityName:[DTCTag entityName]
+                                                                    sortedBy:DTCTagAttributes.name
+                                                                   ascending:YES
+                                                               withPredicate:predicate
+                                                                     inStack:stack];
+         
+        if ([results count]!=0) {
+            // Añadimos la existente
+            [book addTagsObject:[results lastObject]];
+        }
+        else{
+            [book addTagsObject:[DTCTag tagWithName:tag stack:stack]];
+        }
     }
     
-    for (NSString *tag in arrayOfTags) {
-        [book addTagsObject:[DTCTag tagWithName:tag context:context]];
+    // Añadimos autores al libro, creando el autor sólo si no existe
+    for (NSString *author in arrayOfAuthors) {
+        // Compruebo si existe el autor
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name = %@",author];
+        NSArray *results = [DTCCoreDataQueries resultsFromFetchForEntityName:[DTCAuthor entityName]
+                                                                    sortedBy:DTCAuthorAttributes.name
+                                                                   ascending:YES
+                                                               withPredicate:predicate
+                                                                     inStack:stack];
+        
+        if ([results count]!=0) {
+            // Añadimos la existente
+            [book addAuthorsObject:[results lastObject]];
+        }
+        else{
+            [book addAuthorsObject:[DTCAuthor authorWithName:author stack:stack]];
+        }
     }
+    
     
     book.pdf = [DTCPdf pdfWithURL:[NSURL URLWithString:[dict objectForKey:@"pdf_url"]]
-                          context:context];
+                          stack:stack];
     book.photo = [DTCPhoto photoWithImage:[UIImage imageNamed:@"noimageThumb.png"]
                                  imageURL:[NSURL URLWithString:[dict objectForKey:@"image_url"]]
-                                  context:context];
+                                  stack:stack];
     return book;
 }
+
 
 #pragma mark - Utils
 // TRY TO IMPLEMENT A GENERIC METHOD FOR THESE TWO
@@ -85,6 +100,7 @@
     return stringOfAuthors;
 }
 
+
 // Return the tag(s) of a book in a string
 -(NSString *) stringOfTags{
 
@@ -97,6 +113,7 @@
     return stringOfTags;
 }
 
+
 -(BOOL) isFavorite{
     // Un libro será favorito si tiene la tag "favorite"
     
@@ -106,13 +123,29 @@
     return NO;
 }
 
--(void) toggleFavorite{
-//    
-//    if ([self.tags.allObjects containsObject:@"favorite"]) {
-//        self addTagsObject:[DTCTag tagWithName:@"favorite" context:];
-//    }
-//    
+-(void) toggleFavorite:(BOOL) favorite{
+    /*
+    if (favorite) {
+        if (![self.tags containsObject:@"favorite"]) {
+            // No existe aún la etiqueta favorito en la BD
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name = favorite"];
+            NSArray *results = [DTCCoreDataQueries resultsFromFetchForEntityName:[DTCTag entityName]
+                                                                        sortedBy:DTCTagAttributes.name
+                                                                       ascending:YES
+                                                                   withPredicate:predicate
+                                                                         inStack:stack];
+        }
+    }
+    else{
+        // Pasa a no favorito
+        if ([self.tags containsObject:@"favorite"]) {
+            self removeTagsObject:[DTCTag tagWithName:<#(NSString *)#> stack:<#(AGTCoreDataStack *)#>];
+        }
+    }
+     */
 }
+
+
 
 
 #pragma mark - KVO

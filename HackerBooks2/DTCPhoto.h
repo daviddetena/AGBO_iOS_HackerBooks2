@@ -1,5 +1,6 @@
 #import "_DTCPhoto.h"
 @import UIKit;
+@class AGTCoreDataStack;
 
 @interface DTCPhoto : _DTCPhoto {}
 
@@ -11,7 +12,7 @@
 #pragma mark - Factory init
 +(instancetype) photoWithImage:(UIImage *) image
                       imageURL:(NSURL *) imageURL
-                       context:(NSManagedObjectContext *) context;
+                         stack:(AGTCoreDataStack *) stack;
 
 
 @end

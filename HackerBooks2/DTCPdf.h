@@ -1,10 +1,11 @@
 #import "_DTCPdf.h"
+@class AGTCoreDataStack;
 
 @interface DTCPdf : _DTCPdf {}
 
 
 #pragma mark - Init
 +(instancetype) pdfWithURL:(NSURL *) url
-                   context:(NSManagedObjectContext *) context;
+                     stack:(AGTCoreDataStack *) stack;
 
 @end

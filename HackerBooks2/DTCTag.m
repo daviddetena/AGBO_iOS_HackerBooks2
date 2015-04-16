@@ -1,4 +1,7 @@
 #import "DTCTag.h"
+#import "DTCBook.h"
+#import "AGTCoreDataStack.h"
+@import CoreData;
 
 @interface DTCTag ()
 
@@ -9,21 +12,38 @@
 
 #pragma mark - Properties inherited from base class
 +(NSArray *) observableKeys{
-// Observo las propiedades de las relaciones
-return @[];
+    // Observo las propiedades de las relaciones
+    return @[DTCTagAttributes.name,DTCTagRelationships.books];
 }
 
 
 
 #pragma mark - Factory init
 
+
 +(instancetype) tagWithName:(NSString *) name
-                    context:(NSManagedObjectContext *) context{
+                      stack:(AGTCoreDataStack *) stack{
 
     DTCTag *tag = [NSEntityDescription insertNewObjectForEntityForName:[DTCTag entityName]
-                                                inManagedObjectContext:context];
+                                                inManagedObjectContext:stack.context];
     tag.name = name;
     return tag;
+}
+
+
+
+#pragma mark - Utils
+
+// Return the author(s) of a book in a string
+-(NSString *) stringOfBooks{
+    
+    NSMutableString *stringOfBooks = [[NSMutableString alloc]init];
+    for (DTCBook *book in self.books) {
+        [stringOfBooks appendString:book.title];
+        [stringOfBooks appendString:@", "];
+    }
+    [stringOfBooks deleteCharactersInRange:NSMakeRange([stringOfBooks length]-2,2)];
+    return stringOfBooks;
 }
 
 

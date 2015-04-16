@@ -7,6 +7,7 @@
 //
 
 @import Foundation;
+@import CoreData;
 
 @interface DTCHelpers : NSObject
 
@@ -21,5 +22,9 @@
                          separatedBy:(NSString *) separator;
 
 +(NSString *) urlPathWithBackslashesDeletedFromPath: (NSURL *) aPath;
+
++(BOOL) existsItemFromClass:(id) nameClass
+               withProperty:(NSString *) property
+                  inContext:(NSManagedObjectContext *) context;
 
 @end

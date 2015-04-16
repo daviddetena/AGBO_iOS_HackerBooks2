@@ -17,6 +17,7 @@
 		59C5B53A1ADF96D000E130C4 /* AGTCoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C5B5391ADF96D000E130C4 /* AGTCoreDataTableViewController.m */; };
 		59C5B53D1ADF98CD00E130C4 /* DTCLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C5B53C1ADF98CD00E130C4 /* DTCLibraryViewController.m */; };
 		59C5B5401ADFA13300E130C4 /* UIViewController+Navigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C5B53F1ADFA13300E130C4 /* UIViewController+Navigation.m */; };
+		59C5B5471AE00A7D00E130C4 /* DTCCoreDataQueries.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C5B5461AE00A7D00E130C4 /* DTCCoreDataQueries.m */; };
 		59C860771ADD216500068194 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860761ADD216500068194 /* main.m */; };
 		59C8607A1ADD216500068194 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 59C860791ADD216500068194 /* AppDelegate.m */; };
 		59C8607C1ADD216500068194 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59C8607B1ADD216500068194 /* Images.xcassets */; };
@@ -66,6 +67,8 @@
 		59C5B53C1ADF98CD00E130C4 /* DTCLibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCLibraryViewController.m; sourceTree = "<group>"; };
 		59C5B53E1ADFA13300E130C4 /* UIViewController+Navigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Navigation.h"; sourceTree = "<group>"; };
 		59C5B53F1ADFA13300E130C4 /* UIViewController+Navigation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Navigation.m"; sourceTree = "<group>"; };
+		59C5B5451AE00A7D00E130C4 /* DTCCoreDataQueries.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCCoreDataQueries.h; sourceTree = "<group>"; };
+		59C5B5461AE00A7D00E130C4 /* DTCCoreDataQueries.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCCoreDataQueries.m; sourceTree = "<group>"; };
 		59C860711ADD216500068194 /* HackerBooks2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackerBooks2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59C860751ADD216500068194 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59C860761ADD216500068194 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -291,6 +294,8 @@
 				59E625821ADE46550055E6FA /* DTCHelpers.h */,
 				59E625831ADE46550055E6FA /* DTCHelpers.m */,
 				597843011ADECA7E001DC3DB /* Settings.h */,
+				59C5B5451AE00A7D00E130C4 /* DTCCoreDataQueries.h */,
+				59C5B5461AE00A7D00E130C4 /* DTCCoreDataQueries.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -418,6 +423,7 @@
 				59C860C01ADD761E00068194 /* _DTCTag.m in Sources */,
 				59C860BC1ADD761E00068194 /* _DTCBook.m in Sources */,
 				59C860C31ADD761E00068194 /* DTCBook.m in Sources */,
+				59C5B5471AE00A7D00E130C4 /* DTCCoreDataQueries.m in Sources */,
 				59C860C41ADD761E00068194 /* DTCLocation.m in Sources */,
 				59C860C21ADD761E00068194 /* DTCAuthor.m in Sources */,
 				5977739D1ADEA82D00D04F13 /* Model.xcdatamodeld in Sources */,

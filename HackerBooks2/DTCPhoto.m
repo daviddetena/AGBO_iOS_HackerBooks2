@@ -1,4 +1,5 @@
 #import "DTCPhoto.h"
+#import "AGTCoreDataStack.h"
 
 @interface DTCPhoto ()
 
@@ -21,17 +22,17 @@
 // Property inherited from base class
 +(NSArray *) observableKeys{
     // Observo las propiedades de las relaciones
-    return @[];
+    return @[DTCPhotoAttributes.url,DTCPhotoAttributes.photoData];
 }
 
 
 #pragma mark - Factory init
 +(instancetype) photoWithImage:(UIImage *) image
                       imageURL:(NSURL *) imageURL
-                       context:(NSManagedObjectContext *) context{
+                         stack:(AGTCoreDataStack *) stack{
     
     DTCPhoto *photo = [NSEntityDescription insertNewObjectForEntityForName:[DTCPhoto entityName]
-                                                    inManagedObjectContext:context];
+                                                    inManagedObjectContext:stack.context];
     photo.photoData = UIImageJPEGRepresentation(image, 0.9);
     photo.url = [imageURL absoluteString];
     
