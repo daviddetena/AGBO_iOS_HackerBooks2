@@ -7,10 +7,12 @@
 //
 
 #import "DTCLibraryViewController.h"
+#import "DTCBookViewController.h"
 #import "DTCBook.h"
 #import "DTCHelpers.h"
 #import "DTCPhoto.h"
 #import "DTCTag.h"
+#import "Settings.h"
 
 @interface DTCLibraryViewController ()
 
@@ -27,15 +29,22 @@
 }
 
 
+#pragma mark - Utils
+- (DTCBook *) bookAtIndexPath:(NSIndexPath *) indexPath{
+    
+    DTCTag *tag = [self.fetchedResultsController.fetchedObjects objectAtIndex:indexPath.section];
+    DTCBook *book = [[tag.books allObjects] objectAtIndex:indexPath.row];
+    
+    return book;
+}
 
-#pragma mark - DataSource
+
+#pragma mark - TableView DataSource
 -(UITableViewCell *) tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 
-    
-    // Averiguar el tag
-    DTCTag *tag = [self.fetchedResultsController.fetchedObjects objectAtIndex:indexPath.section];
-    DTCBook *book = [[tag.books allObjects] objectAtIndex:indexPath.row];
+    // Libro actual según el tag
+    DTCBook *book = [self bookAtIndexPath:indexPath];
     
     // Crear celda
     static NSString *cellID = @"cellID";
@@ -57,17 +66,28 @@
 }
 
 
--(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
-    return [self.fetchedResultsController.fetchedObjects count];
+#pragma mark - TableView Delegate
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    // Obtenemos libro seleccionado
+    DTCBook *book = [self bookAtIndexPath:indexPath];
+    
+    // Guardamos en NSUserDefaults el id de este libro como el último seleccionado
+    [self saveLastSelectedBook:book];
+    
+    // Lo mostramos en un push view controller
+    DTCBookViewController *bookVC = [[DTCBookViewController alloc]initWithModel:book];
+    [self.navigationController pushViewController:bookVC animated:YES];
 }
 
 
--(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    DTCTag *tag = [self.fetchedResultsController.fetchedObjects objectAtIndex:section];
-    return [[tag.books allObjects]count];
+
+#pragma mark - NSUserDefaults
+-(void) saveLastSelectedBook:(DTCBook *) book{
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setValue:book.archiveURIRepresentation forKey:LAST_SELECTED_BOOK];
+    [defaults synchronize];
 }
-
-
-#pragma mark - Delegate
 
 @end

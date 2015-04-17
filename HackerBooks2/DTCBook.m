@@ -85,6 +85,46 @@
 }
 
 
++(instancetype) bookWithArchivedURIRepresentation:(NSData *) archivedURI
+                                            stack:(AGTCoreDataStack *) stack{
+
+    NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData:archivedURI];
+    if (uri == nil) {
+        return nil;
+    }
+    
+    NSManagedObjectID *nid = [stack.context.persistentStoreCoordinator
+                              managedObjectIDForURIRepresentation:uri];
+    
+    if (nid == nil) {
+        return nil;
+    }
+    
+    NSManagedObject *obj = [stack.context objectWithID:nid];
+    if (obj.isFault) {
+        // Got it !
+        return (DTCBook *) obj;
+    }
+    else{
+        // Might not exist anymore. Let's fetch it!
+        NSFetchRequest *req = [NSFetchRequest fetchRequestWithEntityName:obj.entity.name];
+        req.predicate = [NSPredicate predicateWithFormat:@"SELF = %@",obj];
+        
+        NSError *error;
+        NSArray *res = [stack.context executeFetchRequest:req
+                                                    error:&error];
+        
+        if (res == nil) {
+            return nil;
+        }
+        else{
+            return [res lastObject];
+        }
+    }
+}
+
+
+
 #pragma mark - Utils
 // TRY TO IMPLEMENT A GENERIC METHOD FOR THESE TWO
 
@@ -112,6 +152,15 @@
     [stringOfTags deleteCharactersInRange:NSMakeRange([stringOfTags length] -2 ,2)];
     return stringOfTags;
 }
+
+
+// Returns an NSData with the serialized URI representation of the objectID.
+// Ready to save it in a NSUserDefaults, for example
+-(NSData *) archiveURIRepresentation{
+    NSURL *uri = self.objectID.URIRepresentation;
+    return [NSKeyedArchiver archivedDataWithRootObject:uri];
+}
+
 
 
 -(BOOL) isFavorite{

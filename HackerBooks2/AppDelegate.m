@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "AGTCoreDataStack.h"
 #import "DTCBook.h"
+#import "DTCBookViewController.h"
 #import "DTCAnnotation.h"
 #import "DTCTag.h"
 #import "Settings.h"
@@ -30,26 +31,34 @@
     // Init CoreData stack with the model name
     self.stack = [AGTCoreDataStack coreDataStackWithModelName:@"Model"];
     
-    [self configureApp];
-
+    // Comprobamos si hay último libro seleccionado
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (![defaults objectForKey:LAST_SELECTED_BOOK]) {
+        
+        // Cargar de JSON
+        [self loadModelFromJSON];
+    }
+    
+    // Data for first View => Fetch of all tags, each of them with their books
     NSFetchRequest *req = [NSFetchRequest fetchRequestWithEntityName:[DTCTag entityName]];
-
     req.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:DTCTagAttributes.name ascending:YES selector:@selector(caseInsensitiveCompare:)]];
     NSFetchedResultsController *results = [[NSFetchedResultsController alloc] initWithFetchRequest:req
                                                                               managedObjectContext:self.stack.context
                                                                                 sectionNameKeyPath:DTCTagAttributes.name
                                                                                          cacheName:nil];
     
-    
     // Controlador de tabla de libros con NSFetchedResultsController
     DTCLibraryViewController *libraryVC = [[DTCLibraryViewController alloc] initWithFetchedResultsController:results
-                                                                                                     style:UITableViewStyleGrouped];
+                                                                                                       style:UITableViewStyleGrouped];
     
-    // Controlador raíz: nuestra tabla embebida en un navigation controller
-    self.window.rootViewController = [libraryVC wrappedInNavigation];
+    //DTCBook *lastSelectedBook = nil;
+    if (!IS_IPHONE) {
+        [self configureForPad:libraryVC];
+    }
+    else{
+        [self configureForPhone:libraryVC];
+    }
     
-    
-    // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
@@ -82,29 +91,69 @@
 
 
 #pragma mark - App setup
--(void) configureApp{
 
-    [self configureModelForFirstLaunch];
-    
-    /*
-    // Combrobamos si es la primera vez que se lanza la aplicación
+
+-(void) configureForPad:(DTCLibraryViewController *) libraryVC{
+
+    // Comprobamos si hay último libro seleccionado
+    DTCBook *lastBook = nil;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults objectForKey:LAST_SELECTED_BOOK]) {
-        // Descargamos JSON
-        [self configureModelForFirstLaunch];
         
-        // Cargamos modelo con JSON
+        // Seleccionar primer libro que se verá (para iPad)
+        // Realizo consulta para devolver el primer libro de la primera etiqueta
+        DTCTag *firstTag = [libraryVC.fetchedResultsController.fetchedObjects objectAtIndex:0];
+        lastBook = [firstTag.books.allObjects objectAtIndex:0];
         
-        // Guardamos modelo en CoreData
+        // Guardar primer libro como el seleccionado
+        [self saveLastSelectedBook:lastBook];
     }
     else{
-    
-        // Leer modelo de CoreData
+        lastBook = [self lastSelectedBook];
     }
-     */
+
+    // Controlador primer libro
+    DTCBookViewController *bookVC = [[DTCBookViewController alloc] initWithModel:lastBook];
+    
+    // SplitView para combinar controlador de tabla y de libro
+    UISplitViewController *splitVC = [[UISplitViewController alloc]init];
+    splitVC.viewControllers = @[[libraryVC wrappedInNavigation],[bookVC wrappedInNavigation]];
+    
+    // Delegados => el libro será el delegado del split, ya que será el que muestre
+    // el contenido de los elementos de la tabla
+    splitVC.delegate = bookVC;
+    
+    // Controlador raíz: nuestra tabla embebida en un navigation controller
+    self.window.rootViewController = splitVC;
 }
 
--(void) configureModelForFirstLaunch{
+
+-(void) configureForPhone:(DTCLibraryViewController *) libraryVC{
+
+}
+
+
+-(DTCBook *) lastSelectedBook{
+    // Recuperamos la clave del lastSelectedBook de NSUserDefaults, que será la URL al ObjectID
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *lastBookData = [defaults objectForKey:LAST_SELECTED_BOOK];
+    
+    // Obtenemos instancia del último libro
+    DTCBook *book = [DTCBook bookWithArchivedURIRepresentation:lastBookData stack:self.stack];
+    
+    return book;
+}
+
+-(void) saveLastSelectedBook: (DTCBook *) book{
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[book archiveURIRepresentation] forKey:LAST_SELECTED_BOOK];
+    [defaults synchronize];
+}
+
+
+#pragma mark - JSON
+-(void) loadModelFromJSON{
 
     // Get data from a remote resource via JSON
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:JSON_API_URL]];
@@ -133,6 +182,8 @@
             }
         }
         NSLog(@"JSON successfully downloaded");
+        // Save in CoreData
+        [self save];
     }
     else{
         // No data or error
@@ -198,10 +249,15 @@
     [self save];
 }
 */
+
+
+#pragma mark - CoreData
+
 -(void) save{
     [self.stack saveWithErrorBlock:^(NSError *error) {
         NSLog(@"Error al guardar: %@",error.description);
     }];
+    NSLog(@"Guardado");
 }
 
 -(void) autoSave{
