@@ -11,9 +11,15 @@
 
 
 #pragma mark - Property inherited from base class
+/*
 +(NSArray *) observableKeys{
     // Observo las propiedades de las relaciones
-    return @[];
+    return @[DTCPdfAttributes.pdfData, DTCPdfRelationships.book];
+}
+*/
+// Save NSData from url when required
+-(void) setPdfData:(NSData *) pdfData{
+    self.pdfData = pdfData;
 }
 
 
@@ -29,7 +35,7 @@
     return pdf;
 }
 
-
+/*
 #pragma mark - KVO
 -(void) observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
@@ -37,7 +43,9 @@
                        context:(void *)context{
     
     // Con cualquier cambio en las propiedades observables
-    
+    if ([keyPath isEqualToString:DTCPdfAttributes.pdfData]) {
+        self.pdfData = change 
+    }
 }
-
+*/
 @end

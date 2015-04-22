@@ -7,6 +7,14 @@
 #import "DTCTag.h"
 #import "DTCCoreDataQueries.h"
 
+/* JSON Properties */
+#define TITLE @"title"
+#define AUTHORS @"authors"
+#define IMAGE_URL @"image_url"
+#define PDF_URL @"pdf_url"
+#define TAGS @"tags"
+#define FAVORITE @"Favorite"
+
 @interface DTCBook ()
 
 // Private interface goes here.
@@ -18,7 +26,7 @@
 #pragma mark - Properties inherited from base class
 +(NSArray *) observableKeys{
     // Observo las propiedades de las relaciones
-    return @[DTCBookRelationships.annotations, DTCBookRelationships.pdf, DTCBookRelationships.photo, DTCBookRelationships.tags];
+    return @[DTCBookRelationships.annotations, @"pdf.pdfData", @"photo.photoData", DTCBookRelationships.tags];
 }
 
 
@@ -32,10 +40,10 @@
                                                   inManagedObjectContext:stack.context];
     
     // Propiedades obligatorias
-    NSArray *arrayOfAuthors = [DTCHelpers arrayOfItemsFromString:[dict objectForKey:@"authors"] separatedBy:@", "];
-    NSArray *arrayOfTags = [DTCHelpers arrayOfItemsFromString:[dict objectForKey:@"tags"] separatedBy:@", "];
+    NSArray *arrayOfAuthors = [DTCHelpers arrayOfItemsFromString:[dict objectForKey:AUTHORS] separatedBy:@", "];
+    NSArray *arrayOfTags = [DTCHelpers arrayOfItemsFromString:[dict objectForKey:TAGS] separatedBy:@", "];
     
-    book.title = [dict objectForKey:@"title"];
+    book.title = [dict objectForKey:TITLE];
     
     // Añadimos tags al libro, creando la etiqueta sólo si no existe
     for (NSString *tag in arrayOfTags) {
@@ -67,7 +75,7 @@
                                                                      inStack:stack];
         
         if ([results count]!=0) {
-            // Añadimos la existente
+            // Añadimos existente
             [book addAuthorsObject:[results lastObject]];
         }
         else{
@@ -76,11 +84,12 @@
     }
     
     
-    book.pdf = [DTCPdf pdfWithURL:[NSURL URLWithString:[dict objectForKey:@"pdf_url"]]
-                          stack:stack];
-    book.photo = [DTCPhoto photoWithImage:[UIImage imageNamed:@"noimageThumb.png"]
-                                 imageURL:[NSURL URLWithString:[dict objectForKey:@"image_url"]]
-                                  stack:stack];
+    book.pdf = [DTCPdf pdfWithURL:[NSURL URLWithString:[dict objectForKey:PDF_URL]]
+                            stack:stack];
+    book.photo = [DTCPhoto photoForBookWithURL:[NSURL URLWithString:[dict objectForKey:IMAGE_URL]]
+                                  defaultImage:[UIImage imageNamed:@"emptyBookCover.png"]
+                                         stack:stack];
+    
     return book;
 }
 
@@ -129,28 +138,31 @@
 // TRY TO IMPLEMENT A GENERIC METHOD FOR THESE TWO
 
 // Return the author(s) of a book in a string
--(NSString *) stringOfAuthors{
+-(NSString *) sortedListOfAuthors{
     
-    NSMutableString *stringOfAuthors = [[NSMutableString alloc]init];
-    for (DTCAuthor *author in self.authors) {
-        [stringOfAuthors appendString:author.name];
-        [stringOfAuthors appendString:@", "];
+    // Standarize case, sort, join with comma
+    NSArray *all = [self.authors allObjects];
+    NSMutableArray *authors = [NSMutableArray arrayWithCapacity:all.count];
+    for (DTCAuthor *author in all) {
+        [authors addObject:author.name];
     }
-    [stringOfAuthors deleteCharactersInRange:NSMakeRange([stringOfAuthors length]-2,2)];
-    return stringOfAuthors;
+    NSString *contat = [authors componentsJoinedByString:@", "];
+    return contat;
 }
 
 
 // Return the tag(s) of a book in a string
--(NSString *) stringOfTags{
-
-    NSMutableString *stringOfTags = [[NSMutableString alloc]init];
-    for (DTCTag *tag in self.tags) {
-        [stringOfTags appendString:tag.name];
-        [stringOfTags appendString:@", "];
+// Return the author(s) of a book in a string
+-(NSString *) sortedListOfTags{
+    
+    // Standarize case, sort, join with comma
+    NSArray *all = [self.tags allObjects];
+    NSMutableArray *tags = [NSMutableArray arrayWithCapacity:all.count];
+    for (DTCTag *tag in all) {
+        [tags addObject:tag.name];
     }
-    [stringOfTags deleteCharactersInRange:NSMakeRange([stringOfTags length] -2 ,2)];
-    return stringOfTags;
+    NSString *contat = [tags componentsJoinedByString:@", "];
+    return contat;
 }
 
 
@@ -166,7 +178,7 @@
 -(BOOL) isFavorite{
     // Un libro será favorito si tiene la tag "favorite"
     
-    if ([self.tags.allObjects containsObject:@"favorite"]){
+    if ([self.tags.allObjects containsObject:FAVORITE]){
         return YES;
     }
     return NO;
@@ -205,6 +217,8 @@
     
     // Con cualquier cambio en las propiedades observables
     // de la anotación, cambio la fecha de modificación
+    
+    // COMPROBAR FAVORITO
     
 }
 

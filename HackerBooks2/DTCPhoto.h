@@ -1,4 +1,6 @@
 #import "_DTCPhoto.h"
+#import "AGTAsyncImage.h"
+
 @import UIKit;
 @class AGTCoreDataStack;
 
@@ -10,9 +12,9 @@
 @property (strong,nonatomic) UIImage *image;
 
 #pragma mark - Factory init
-+(instancetype) photoWithImage:(UIImage *) image
-                      imageURL:(NSURL *) imageURL
-                         stack:(AGTCoreDataStack *) stack;
++(instancetype) photoForBookWithURL:(NSURL *) imageURL
+                       defaultImage:(UIImage *) defaultImage
+                              stack:(AGTCoreDataStack *) stack;
 
 
 @end

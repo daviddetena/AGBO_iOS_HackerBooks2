@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 David de Tena. All rights reserved.
 //
 
+#import "DTCLibraryViewController.h"
 #import "DTCBookViewController.h"
+#import "DTCSimplePDFViewController.h"
 #import "DTCBook.h"
 #import "DTCPhoto.h"
 #import "DTCAnnotation.h"
@@ -32,7 +34,7 @@
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    // Make sure the view not to use the whole screen when embeded in combiners
+    // Make sure the view not to use the whole screen when embeded in navs or tabbar
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     // Init display mode button on the left in Navigation Controller
@@ -44,8 +46,6 @@
 
 -(void) viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    
-    // Sync model with view
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,9 +56,10 @@
 
 #pragma mark - Utils
 -(void) syncViewWithModel{
+    
     self.titleLabel.text = self.model.title;
-    //self.authorLabel.text = [self.model stringOfAuthors];
-    //self.tagLabel.text = [self.model stringOfTags];
+    self.authorLabel.text = [self.model sortedListOfAuthors];
+    self.tagLabel.text = [self.model sortedListOfTags];
     
     // CARGAR LA IMAGEN EN SEGUNDO PLANO AL DESCARGARSE
     if ([self.model.annotations count]==0) {
@@ -87,4 +88,29 @@
 }
 
 
+#pragma mark - DTCLibraryViewControllerDelegate
+// Cuando cambia el libro seleccionado de la tabla, el modelo cambia
+-(void) libraryTableViewController:(DTCLibraryViewController *)libraryVC
+                     didSelectBook:(DTCBook *)aBook{
+    
+    //NSLog(@"Entro en didSelectBook de BookVC");
+    self.title = aBook.title;
+    self.model = aBook;
+    [self syncViewWithModel];
+}
+
+
+
+#pragma mark - Actions
+// Update favorite status of the book
+- (IBAction)toggleFavoriteStatus:(id)sender {
+    
+    
+}
+
+// Read the book
+- (IBAction)readBook:(id)sender {
+    DTCSimplePDFViewController *pdfVC = [[DTCSimplePDFViewController alloc]initWithModel:self.model];
+    [self.navigationController pushViewController:pdfVC animated:YES];
+}
 @end

@@ -31,8 +31,7 @@
                         change:(NSDictionary *)change
                        context:(void *)context{
     
-    // Con cualquier cambio en las propiedades observables
-    
+    // Cualquier cambio en las propiedades observables
 }
 
 @end

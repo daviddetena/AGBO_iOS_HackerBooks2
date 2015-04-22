@@ -1,23 +1,11 @@
 #import "DTCPhoto.h"
 #import "AGTCoreDataStack.h"
+#import "AGTAsyncImage.h"
 
-@interface DTCPhoto ()
-
-@end
 
 @implementation DTCPhoto
 
 #pragma mark - Properties
-
--(void) setImage:(UIImage *) image{
-    // Sincronizar con photoData
-    self.photoData = UIImageJPEGRepresentation(image, 0.9);
-}
-
--(UIImage *) image{
-    return [UIImage imageWithData:self.photoData];
-}
-
 
 // Property inherited from base class
 +(NSArray *) observableKeys{
@@ -25,19 +13,35 @@
     return @[DTCPhotoAttributes.url,DTCPhotoAttributes.photoData];
 }
 
+-(UIImage *) image{
+    return [UIImage imageWithData:self.photoData];
+}
+
+-(void) setImage:(UIImage *)image{
+    // Convertimos UIImage en NSData entendible por Core Data
+    self.photoData = UIImageJPEGRepresentation(image, 0.9);
+}
+
+
 
 #pragma mark - Factory init
-+(instancetype) photoWithImage:(UIImage *) image
-                      imageURL:(NSURL *) imageURL
-                         stack:(AGTCoreDataStack *) stack{
-    
++(instancetype) photoForBookWithURL:(NSURL *) imageURL
+                       defaultImage:(UIImage *) defaultImage
+                              stack:(AGTCoreDataStack *) stack{
+
+    // Cargamos la imagen con imagen por defecto
     DTCPhoto *photo = [NSEntityDescription insertNewObjectForEntityForName:[DTCPhoto entityName]
                                                     inManagedObjectContext:stack.context];
-    photo.photoData = UIImageJPEGRepresentation(image, 0.9);
-    photo.url = [imageURL absoluteString];
+    
+    // Iniciamos imagen por defecto. Al terminar la carga en segundo plano
+    // se cargará automáticamente en el UIImage
+    photo.url = [imageURL path];
+    photo.photoData = nil;
+    photo.image = defaultImage;
     
     return photo;
 }
+
 
 
 #pragma mark - KVO
@@ -47,7 +51,6 @@
                        context:(void *)context{
     
     // Con cualquier cambio en las propiedades observables
-    
 }
 
 @end

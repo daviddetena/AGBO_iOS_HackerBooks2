@@ -1,49 +1,38 @@
 #import "DTCTag.h"
 #import "DTCBook.h"
 #import "AGTCoreDataStack.h"
+
+#define FAVORITE @"Favorite"
+
 @import CoreData;
 
-@interface DTCTag ()
-
-@end
 
 @implementation DTCTag
 
-
-#pragma mark - Properties inherited from base class
+#pragma mark - Properties
+// Inherited from base class
 +(NSArray *) observableKeys{
-    // Observo las propiedades de las relaciones
+    // Observo propiedades
     return @[DTCTagAttributes.name,DTCTagRelationships.books];
 }
 
+-(BOOL) isFavorite{
+    if ([self.name isEqualToString:FAVORITE]) {
+        return YES;
+    }
+    return NO;
+}
 
 
 #pragma mark - Factory init
 
-
-+(instancetype) tagWithName:(NSString *) name
++(instancetype) tagWithName:(NSString *) tagName
                       stack:(AGTCoreDataStack *) stack{
 
     DTCTag *tag = [NSEntityDescription insertNewObjectForEntityForName:[DTCTag entityName]
                                                 inManagedObjectContext:stack.context];
-    tag.name = name;
+    tag.name = tagName;
     return tag;
-}
-
-
-
-#pragma mark - Utils
-
-// Return the author(s) of a book in a string
--(NSString *) stringOfBooks{
-    
-    NSMutableString *stringOfBooks = [[NSMutableString alloc]init];
-    for (DTCBook *book in self.books) {
-        [stringOfBooks appendString:book.title];
-        [stringOfBooks appendString:@", "];
-    }
-    [stringOfBooks deleteCharactersInRange:NSMakeRange([stringOfBooks length]-2,2)];
-    return stringOfBooks;
 }
 
 
@@ -53,8 +42,7 @@
                         change:(NSDictionary *)change
                        context:(void *)context{
     
-    // Con cualquier cambio en las propiedades observables
-    
+    // Con cualquier cambio en las propiedades observables    
 }
 
 @end

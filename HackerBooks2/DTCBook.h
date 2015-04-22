@@ -14,8 +14,8 @@
 
 #pragma mark - Instance methods
 
--(NSString *) stringOfAuthors;
--(NSString *) stringOfTags;
+-(NSString *) sortedListOfAuthors;
+-(NSString *) sortedListOfTags;
 -(NSData *) archiveURIRepresentation;
 
 @end

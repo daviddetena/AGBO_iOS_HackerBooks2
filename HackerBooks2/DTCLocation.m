@@ -23,8 +23,7 @@
                         change:(NSDictionary *)change
                        context:(void *)context{
     
-    // Con cualquier cambio en las propiedades observables
-    
+    // Al cambiar el address => obtener nueva (longitud,latitud)
 }
 
 @end

@@ -25,13 +25,13 @@
                                                            selector:@selector(caseInsensitiveCompare:)]];
     
     NSArray *results = [stack executeFetchRequest:req errorBlock:^(NSError *error) {
-        NSLog(@"Error");
+        NSLog(@"Error %@", error.localizedDescription);
     }];
     
     return results;
 }
 
-
+// Method with the objects matching a request with predicate
 +(NSArray *) resultsFromFetchForEntityName:(NSString *) entityName
                                   sortedBy:(NSString *) sortingField
                                  ascending:(BOOL) ascending
@@ -45,7 +45,7 @@
     req.predicate = predicate;
     
     NSArray *results = [stack executeFetchRequest:req errorBlock:^(NSError *error) {
-        NSLog(@"Error");
+        NSLog(@"Error %@", error.localizedDescription);
     }];
     
     return results;

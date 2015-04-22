@@ -8,8 +8,9 @@
 
 @import UIKit;
 @class DTCBook;
+#import "DTCLibraryViewController.h"
 
-@interface DTCBookViewController : UIViewController<UISplitViewControllerDelegate>
+@interface DTCBookViewController : UIViewController<UISplitViewControllerDelegate,DTCLibraryTableViewControllerDelegate>
 
 #pragma mark - Properties
 @property (weak, nonatomic) IBOutlet UIImageView *photoView;
@@ -19,10 +20,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *annotationLabel;
 @property (strong,nonatomic) DTCBook *model;
 
+
+
 #pragma mark - Init
 -(id) initWithModel: (DTCBook *) model;
 
 
-#pragma mark - Methods
+#pragma mark - Actions
+- (IBAction)toggleFavoriteStatus:(id)sender;
+- (IBAction)readBook:(id)sender;
+
 
 @end

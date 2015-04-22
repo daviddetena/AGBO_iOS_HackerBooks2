@@ -49,6 +49,7 @@
     
     // Controlador de tabla de libros con NSFetchedResultsController
     DTCLibraryViewController *libraryVC = [[DTCLibraryViewController alloc] initWithFetchedResultsController:results
+                                                                                                       stack:self.stack
                                                                                                        style:UITableViewStyleGrouped];
     
     //DTCBook *lastSelectedBook = nil;
@@ -90,6 +91,7 @@
 }
 
 
+
 #pragma mark - App setup
 
 
@@ -114,6 +116,8 @@
 
     // Controlador primer libro
     DTCBookViewController *bookVC = [[DTCBookViewController alloc] initWithModel:lastBook];
+    // Será el delegado de la tabla
+    libraryVC.delegate = bookVC;
     
     // SplitView para combinar controlador de tabla y de libro
     UISplitViewController *splitVC = [[UISplitViewController alloc]init];
@@ -129,7 +133,7 @@
 
 
 -(void) configureForPhone:(DTCLibraryViewController *) libraryVC{
-
+    // NOT IMPLEMENTED YET
 }
 
 
@@ -170,13 +174,11 @@
                                                          options:kNilOptions
                                                            error:&error];
         
-        
         if (JSONObjects!=nil) {
             if ([JSONObjects isKindOfClass:[NSArray class]]) {
                 
                 // Guardamos cada libro a partir de su diccionario en el JSON
                 for (NSDictionary *dict in JSONObjects) {
-                    //[DTCBook bookWithDictionary:dict context:self.stack.context];
                     [DTCBook bookWithDictionary:dict stack:self.stack];
                 }
             }
@@ -189,10 +191,13 @@
         // No data or error
         NSLog(@"Error while downloading JSON from server: %@",error.localizedDescription);
     }
+    
+    [self autoSave];
 }
 
 
 #pragma mark - Utils
+
 /*
 -(void) trastearConDatos{
 
